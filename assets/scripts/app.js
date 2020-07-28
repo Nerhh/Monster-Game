@@ -28,47 +28,58 @@ let battleLog = [];
 adjustHealthBars(chosenMaxLife);
 
 function log(event, value, monsterHealth, playerHealth) {
-    let logEntry;
+    let logEntry = {
+        event: event,
+        value: value,
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth
+    };
 
-    if (event === LOG_EVENT_PLAYER_ATTACK) {
-        logEntry = {
-            event: event,
-            value: value,
-            target: 'MONSTER',
-            finalMonsterHealth: monsterHealth,
-            finalPlayerHealth: playerHealth
-        };
-    } else if (event === LOG_EVENT_STRONG_PLAYER_ATTACK) {
-        logEntry = {
-            event: event,
-            value: value,
-            target: 'MONSTER',
-            finalMonsterHealth: monsterHealth,
-            finalPlayerHealth: playerHealth
-        };
-    } else if (event === LOG_EVENT_MONSTER_ATTACK) {
-        logEntry = {
-            event: event,
-            value: value,
-            target: 'PLAYER',
-            finalMonsterHealth: monsterHealth,
-            finalPlayerHealth: playerHealth
-        };
-    } else if (event === LOG_EVENT_PLAYER_HEAL) {
-        logEntry = {
-            event: event,
-            value: value,
-            target: 'PLAYER',
-            finalMonsterHealth: monsterHealth,
-            finalPlayerHealth: playerHealth
-        };
-    } else if (event === LOG_EVENT_GAME_OVER) {
-        logEntry = {
-            event: event,
-            value: value,
-            finalMonsterHealth: monsterHealth,
-            finalPlayerHealth: playerHealth
-        };
+    switch (event) {
+        case LOG_EVENT_PLAYER_ATTACK:
+            logEntry = {
+                event: event,
+                value: value,
+                target: 'MONSTER',
+                finalMonsterHealth: monsterHealth,
+                finalPlayerHealth: playerHealth
+            };
+            break;
+        case LOG_EVENT_STRONG_PLAYER_ATTACK:
+            logEntry = {
+                event: event,
+                value: value,
+                target: 'MONSTER',
+                finalMonsterHealth: monsterHealth,
+                finalPlayerHealth: playerHealth
+            };
+            break;
+        case LOG_EVENT_MONSTER_ATTACK:
+            logEntry = {
+                event: event,
+                value: value,
+                target: 'PLAYER',
+                finalMonsterHealth: monsterHealth,
+                finalPlayerHealth: playerHealth
+            };
+            break;
+        case LOG_EVENT_PLAYER_HEAL:
+            logEntry = {
+                event: event,
+                value: value,
+                target: 'PLAYER',
+                finalMonsterHealth: monsterHealth,
+                finalPlayerHealth: playerHealth
+            };
+            break;
+        case LOG_EVENT_GAME_OVER:
+            logEntry = {
+                event: event,
+                value: value,
+                finalMonsterHealth: monsterHealth,
+                finalPlayerHealth: playerHealth
+            };
+            break;
     }
 
     battleLog.push(logEntry);
@@ -119,14 +130,6 @@ function attackMonster(attackMode) {
     const maxDamage = attackMode === MODE_ATTACK ? attackValPlayer : strongAttackValPlayer;
     const logEvent = attackMode === MODE_ATTACK ? LOG_EVENT_PLAYER_ATTACK : LOG_EVENT_STRONG_PLAYER_ATTACK;
 
-    /*if (attackMode === MODE_ATTACK) {
-        maxDamage = attackValPlayer;
-        logEvent = LOG_EVENT_PLAYER_ATTACK;
-    } else if (attackMode === MODE_STRONG_ATTACK) {
-        maxDamage = strongAttackValPlayer;
-        logEvent = LOG_EVENT_STRONG_PLAYER_ATTACK;
-    }*/
-
     const damageMonster = dealMonsterDamage(maxDamage);
     currentMonsterHealth -= damageMonster;
 
@@ -160,7 +163,15 @@ function onHeal() {
 }
 
 function onPrint() {
-    console.log(battleLog);
+    let i = 0;
+
+    for(const logEntry of battleLog) {
+        console.log(`#${i}`);
+        for(const key in logEntry) {
+            console.log(`${key} => ${logEntry[key]}`);
+        }
+        i++;
+    }
 }
 
 attackBtn.addEventListener('click', onAttack);
