@@ -116,21 +116,21 @@ function deathCheck() {
 }
 
 function attackMonster(attackMode) {
-    let maxDamage;
-    let logEvent;
+    const maxDamage = attackMode === MODE_ATTACK ? attackValPlayer : strongAttackValPlayer;
+    const logEvent = attackMode === MODE_ATTACK ? LOG_EVENT_PLAYER_ATTACK : LOG_EVENT_STRONG_PLAYER_ATTACK;
 
-    if (attackMode === MODE_ATTACK) {
+    /*if (attackMode === MODE_ATTACK) {
         maxDamage = attackValPlayer;
         logEvent = LOG_EVENT_PLAYER_ATTACK;
     } else if (attackMode === MODE_STRONG_ATTACK) {
         maxDamage = strongAttackValPlayer;
         logEvent = LOG_EVENT_STRONG_PLAYER_ATTACK;
-    }
+    }*/
 
     const damageMonster = dealMonsterDamage(maxDamage);
     currentMonsterHealth -= damageMonster;
 
-    log(logEvent, damageMonster , currentMonsterHealth, currentPlayerHealth);
+    log(logEvent, damageMonster, currentMonsterHealth, currentPlayerHealth);
 
     deathCheck();
 }
