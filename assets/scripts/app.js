@@ -7,11 +7,26 @@ let chosenMaxLife = 100;
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
 
+let hasBonusLife = true;
+
 adjustHealthBars(chosenMaxLife);
 
 function deathCheck() {
+    const initalPlayerHealth = currentPlayerHealth;
+
     const damagePlayer = dealPlayerDamage(attackValMonster);
     currentPlayerHealth -= damagePlayer
+
+    if(currentPlayerHealth <= 0 && hasBonusLife) {
+        hasBonusLife = false;
+        removeBonusLife();
+
+        //Resets health to before monster hit
+        currentPlayerHealth = initalPlayerHealth;
+        setPlayerHealth(initalPlayerHealth);
+
+        alert('You were saved by your bonus life!');
+    }
 
     if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
         alert('You won');
